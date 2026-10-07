@@ -81,7 +81,7 @@ ChatServerMaster::ChatServerMaster(const std::string &config_file)
         }
         else
         {
-            is_active_master = false;
+            is_active_master = true;
             std::cout << "[MASTER ELECTION] Active master already exists in cluster. Initializing as STANDBY." << std::endl;
         }
         txn.commit();

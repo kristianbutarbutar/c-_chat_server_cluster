@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
+#include <csignal> // Required for signal handling
 #include "chat_server_master.hpp"
 #include "chat_server_node.hpp"
 #include "chat_server_voice.hpp"
@@ -14,7 +15,6 @@ void printUsage(const char *progName)
               << "  To run as Voice Node:        " << progName << " voice <port>\n";
 }
 
-// Helper to parse db_conn string from config file if needed
 std::string parseDbConnFromConfig(const std::string &configFile)
 {
     std::ifstream file(configFile);
@@ -46,6 +46,9 @@ std::string parseDbConnFromConfig(const std::string &configFile)
 
 int main(int argc, char *argv[])
 {
+    // Ignore SIGPIPE globally to prevent process termination on broken socket connections
+    signal(SIGPIPE, SIG_IGN);
+
     if (argc < 3)
     {
         printUsage(argv[0]);
